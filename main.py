@@ -1,5 +1,5 @@
 from data_utils import *
-from model import *
+from toy_model import *
 from scipy import stats
 from sklearn.metrics import mean_squared_error
 from ase.io import read
