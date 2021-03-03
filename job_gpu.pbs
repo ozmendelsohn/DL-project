@@ -1,0 +1,14 @@
+#!/bin/sh
+
+#PBS -N gpujob_interactive
+#PBS -l select=1:ncpus=18:mem=40gb:ngpus=2:node_type=cfj
+#PBS -q gpuq
+
+ulimit -s unlimited
+
+##### Execute Program #####
+source ~/.bash_profile
+source ~/.bashrc
+echo 'interactive job gpu'
+echo $DISPLAY
+
