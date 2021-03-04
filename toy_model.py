@@ -1,7 +1,6 @@
 from torch import nn
 import torch.functional as F
 
-
 class energy_nn(nn.Module):
     def __init__(self, input_size, hidden1_size=128, hidden2_size=128):
         super(energy_nn, self).__init__()
@@ -16,7 +15,6 @@ class energy_nn(nn.Module):
         x = self.active2(self.dense2(x))
         x = self.dense_out(x)
         return x
-
 
 class force_nn(nn.Module):
     def __init__(self, input_size, hidden1_size=128, hidden2_size=128):

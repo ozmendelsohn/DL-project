@@ -37,29 +37,35 @@ class xyzDataset(Dataset):
         return self.n_samples
 
 class xyzDatasetTensor(Dataset):
-    def __init__(self, df, target='energy'):
+    def __init__(self, xyz_files, target='energy'):
         """
-        :type df: DataFrame
         """
-        x_col, y_col = [], []
-        for col in df.columns:
-            if 'position' in col:
-                x_col.append(col)
-        if target == 'energy':
-            y_col.append('E')
-        elif target == 'force':
-            for col in df.columns:
-                if 'force' in col:
-                    y_col.append(col)
-        self.x_col = x_col
-        self.y_col = y_col
-        self.n_samples = len(df)
+        if isinstance(xyz_files, str):
+            xyz_files = [xyz_files]
         x, y = [], []
-        for index in tqdm(range(len(df))):
-            x.append(torch.Tensor(df.loc[index, self.x_col].values))
-            y.append(torch.Tensor(df.loc[index, self.y_col].values))
+        self.n_samples = 0
+        for xyz_file in xyz_files:
+            molecules = io.read(xyz_file, index=':')
+            molecules = [mol for mol in molecules if
+                         mol.get_calculator() is not None]  # filter incomplete outputs from trajectory
+            lattice = np.array(molecules[0].get_cell())
+            Z = np.array([mol.get_atomic_numbers() for mol in molecules])
+            all_z_the_same = (Z == Z[0]).all()
+            if not all_z_the_same:
+                print('Order of atoms changes accross dataset!\n Bye!')
+                exit()
+            z = Z[0]
+            self.n_samples += len(molecules)
+
+            for index, mol in tqdm(zip(range(len(molecules)), molecules), total=len(molecules)):
+                xi = mol.positions.reshape([-1, 3*mol.get_global_number_of_atoms()])
+                yi = mol.get_forces().reshape([-1, 3*mol.get_global_number_of_atoms()])
+                x.append(torch.Tensor(xi))
+                y.append(torch.Tensor(yi))
+        self.n_samples = len(x)
         self.x = torch.stack(x)
         self.y = torch.stack(y)
+
 
     def __getitem__(self, index):
         x = self.x[index, :]

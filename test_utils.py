@@ -28,10 +28,9 @@ def test_loss(nn, testset, criteria, device=device):
 def test_f_loss(nn, testset, criteria, device=device, n_atoms=n_atoms):
     with torch.no_grad():
         for i, (X, y) in enumerate(testset):
-            X = X.to(device=device).float()
-            y = y.to(device=device).float()
+            X = X.to(device=device).float().view(-1, n_atoms * 3)
+            y = y.to(device=device).float().view(-1, n_atoms * 3)
             output = nn(X)
-            y = y.view(-1, n_atoms * 3)
             val_loss = criteria(y, output)
             break
         return val_loss
