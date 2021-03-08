@@ -29,7 +29,7 @@ RELOAD_DATA = False
 
 if RELOAD_DATA:
     training_datasets = []
-    for file in os.listdir('datasets')[:]:
+    for file in os.listdir('datasets')[:5]:
         if '300K' in file:
             continue
         else:
