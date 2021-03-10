@@ -10,7 +10,7 @@ from torch.utils.data import Dataset, DataLoader
 import torch.optim as optim
 from tqdm import tqdm
 import petname
-
+n_atoms = read('datasets/40-cspbbr3-795K.xyz').get_global_number_of_atoms()
 
 # %% Setup
 def get_device(USE_GPU=True, verbose=True):
@@ -73,8 +73,9 @@ def train_over_hyperparameters(model, init_state_path,
                                criteria,
                                lr=1e-4, weight_decay=0.99, epochs=100,
                                batch_size=100, test_batch_size=100,
+                               name=None,
                                cuda=True, parallel=True, verbose=False):
-    name = petname.Generate(3, ' ', 10)
+    name = petname.Generate(3, ' ', 10) if name is None else name
     if verbose:
         print(f'starting: {name}')
     writer = SummaryWriter(log_dir=f'runs/{name}')

@@ -37,7 +37,7 @@ class xyzDataset(Dataset):
         return self.n_samples
 
 class xyzDatasetTensor(Dataset):
-    def __init__(self, xyz_files, target='energy'):
+    def __init__(self, xyz_files, target='forces'):
         """
         """
         if isinstance(xyz_files, str):
@@ -59,7 +59,11 @@ class xyzDatasetTensor(Dataset):
 
             for index, mol in tqdm(zip(range(len(molecules)), molecules), total=len(molecules)):
                 xi = mol.positions.reshape([-1, 3*mol.get_global_number_of_atoms()])
-                yi = mol.get_forces().reshape([-1, 3*mol.get_global_number_of_atoms()])
+                if target == 'forces':
+                    yi = mol.get_forces().reshape([-1, 3*mol.get_global_number_of_atoms()])
+                elif target == 'energy':
+                    yi = mol.get_potential_energy()
+
                 x.append(torch.Tensor(xi))
                 y.append(torch.Tensor(yi))
         self.n_samples = len(x)
