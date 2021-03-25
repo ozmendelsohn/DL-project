@@ -40,3 +40,4 @@ class modular_nn(nn.Module):
     def forward(self, input):
         x = self.net(input)
         return x
+

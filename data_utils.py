@@ -273,3 +273,4 @@ if __name__ == '__main__':
                 all_snapshots += f.read()
         with open(f'datasets/40-cspbbr3-{temp}K.xyz', 'w') as f:
             f.write(all_snapshots)
+

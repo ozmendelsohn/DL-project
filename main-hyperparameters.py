@@ -107,3 +107,4 @@ except ValueError:
     df = pd.DataFrame()
 df = df.append(line, ignore_index=True)
 df.to_json(LOGGING_FILE)
+
