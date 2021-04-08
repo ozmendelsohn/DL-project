@@ -157,7 +157,7 @@ res = gp_minimize(model_setup_run,  # the function to minimize
                    ],  # the bounds on each dimension of x
                   acq_func="EI",  # the acquisition function
                   n_calls=20,  # the number of evaluations of f
-                  n_initial_points=3,  # the number of random initialization points
+                  n_initial_points=1,  # the number of random initialization points
                   verbose=True,
                   callback=res_callback,
                   noise=0.00001 ** 2,  # the noise level (optional)
