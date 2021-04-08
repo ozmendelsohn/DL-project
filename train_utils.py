@@ -10,7 +10,7 @@ from torch.utils.data import Dataset, DataLoader
 import torch.optim as optim
 from tqdm import tqdm
 import petname
-n_atoms = read('datasets/40-cspbbr3-795K.xyz').get_global_number_of_atoms()
+n_atoms = read('../datasets/40-cspbbr3-795K.xyz').get_global_number_of_atoms()
 
 # %% Setup
 def get_device(USE_GPU=True, verbose=True):

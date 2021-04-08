@@ -11,7 +11,7 @@ if USE_GPU and torch.cuda.is_available():
 else:
     device = torch.device('cpu')
 
-n_atoms = read('datasets/40-cspbbr3-795K.xyz').get_global_number_of_atoms()
+n_atoms = read('../datasets/40-cspbbr3-795K.xyz').get_global_number_of_atoms()
 
 
 def test_loss(nn, testset, criteria, device=device):
